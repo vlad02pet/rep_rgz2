@@ -5,11 +5,11 @@
 #include <fstream>
 #include <algorithm>
 #include <cmath>
+#include <filesystem>
 using namespace std;
 
 class FileSearch
   {
-    string way = "d:\\Shchupak\\Files\\";
     const char *separators{ " ,;:.\"!?'*\n" };
     vector <string> textsInFiles;
     vector <float> relevance;
@@ -19,7 +19,7 @@ class FileSearch
       };
     Scroll *scroll;
     unsigned int numb;
-    void way2file(string &name, int iter);
+    void way2file(string &name, string &way, int iter);
     public:
       FileSearch();
       FileSearch(unsigned int n)
@@ -42,7 +42,7 @@ class FileSearch
       void filesRemove();
   };
 
-void FileSearch::way2file(string &name, int iter)
+void FileSearch::way2file(string &name, string &way, int iter)
   {
   	 string way_copy = way;
   	 name += ".txt";
@@ -63,15 +63,14 @@ void FileSearch::fillScroll()
      cout<<"Input files name"<<endl;
      for(unsigned int i=0;i<numb;i++)
        {
-       	  string name;
-          cout<<"Input file name #"<<i+1<<": ";
+       	  string way, name;
+       	  cout<<"File #"<<i+1<<endl;
+       	  cout<<"Input way (without a filename): ";
+       	  cin>>way;
+          cout<<"Input name (without a suffix): ";
           cin>>name;
-		  //scroll[i].fileName;
-          //strcat(scroll[i].fileName, ".txt");
-          //strcat((char *) way, scroll[i].fileName);
-          way2file(name, i);
+          way2file(name, way, i);
           cout<<scroll[i].fileName<<endl;
-          //const string v = (consscroll -> fileName[i];
           file.open(scroll[i].fileName, fstream::in | fstream::out | fstream::app);
           if(!file) 
             {
@@ -116,7 +115,6 @@ void FileSearch::fileInOut()
                            cout<<text<<endl;
                            textSave += text + '\n';
 						}
-					  //cout<<endl<<endl<<textSave<<endl;
 					  textsInFiles.push_back(textSave);
                       fin.close();
                     }
@@ -126,9 +124,7 @@ void FileSearch::fileInOut()
                       ofstream fout;
                       string text;
                       cout<<"Input text"<<endl;
-                      //cin>>text;
                       getline(cin, text, '@');
-                      //cout<<text<<endl;
                       fout.open(scroll[i].fileName, fstream::out | fstream::app);
                       if(fout.is_open())
                         {
@@ -174,12 +170,6 @@ void FileSearch::wordSplit(vector<string>& words, string &text)
            }
       }
       
-      //cout << "words: \n";
-      /*for (long unsigned int i = 0; i < words.size(); i++)
-        {
-          cout << words[i] << std::endl;
-     
-	    }*/
   }
 
 unsigned FileSearch::countFindWords(string &text, string &findInText)
@@ -205,7 +195,6 @@ unsigned FileSearch::countFindWords(string &text, string &findInText)
 
 void FileSearch::procPhrases(vector<string>& words, vector<string>& phrases, unsigned n)
   {
-  	//cout<<"Splitting words into "<<n<<endl;
     for(unsigned int i = 0;i<(words.size()-n+1);i++)
       {
       	 phrases.push_back(words[i]);
@@ -221,12 +210,6 @@ void FileSearch::procPhrases(vector<string>& words, vector<string>& phrases, uns
 
 void FileSearch::procFrequencies(vector <float> &frequencies, string &text, string &findInText)
   {
-    /*string text, sub; 
-  	cout<<"ínput text: ";
-  	getline(cin, text, '@');
-  	cout<<"input subtext: ";
-  	cin.get();
-  	getline(cin, sub);*/
   	transform(text.begin(), text.end(), text.begin(), ::tolower);
     transform(findInText.begin(), findInText.end(), findInText.begin(), ::tolower);
   	vector<string> wordsInSub;
@@ -250,11 +233,6 @@ void FileSearch::procFrequencies(vector <float> &frequencies, string &text, stri
            }
   	     frequencies.push_back(frequenc*100);
 	  }
-  	/*for(unsigned i{};i<frequencies.size();i++)
-  	  {
-  	  	 cout<<"Frequency of phrases in "<<i+1<<": "<<frequencies[i];
-  	  	 cout<<endl;
-	  }*/
   }
 
 void FileSearch::procRelevance()
@@ -262,7 +240,7 @@ void FileSearch::procRelevance()
   	for(int c{};c!=-1;c++)
   	  {
   	  	int choice;
-  	  	cout<<"1 - next request, 0 - exit"<<": ";
+  	  	cout<<"1 - ask a request, 0 - exit"<<": ";
   	  	cin>>choice;
   	  	if(choice==1)
   	  	  {
