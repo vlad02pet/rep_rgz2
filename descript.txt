@@ -1,0 +1,1 @@
+A program that writes and reads information in files and searches for the request text in them.
