@@ -60,13 +60,14 @@ FileSearch::FileSearch()
 void FileSearch::fillScroll()
   {
      fstream file;
+     string way;
+     cout<<"Input folder path: ";
+     cin>>way;
      cout<<"Input files name"<<endl;
      for(unsigned int i=0;i<numb;i++)
        {
-       	  string way, name;
+       	  string name;
        	  cout<<"File #"<<i+1<<endl;
-       	  cout<<"Input way (without a filename): ";
-       	  cin>>way;
           cout<<"Input name (without a suffix): ";
           cin>>name;
           way2file(name, way, i);
