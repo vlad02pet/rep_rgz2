@@ -1,1 +1,10 @@
 A program that writes and reads information in files and searches for the request text in them.
+Program sequence of actions:
+1) select the number of files;
+2) write down the path of the folder where the files will be located;
+3) the names of each file;
+4) file reading and (or) text writing;
+5) setting a text query in files;
+6) determination of coefficients for sums of frequencies of ratios of
+the number of phrases of 1..n words found in the text to the total found 
+groups of words standing in a row of 1..n in the text.
